@@ -1,4 +1,3 @@
-import 'package:flight_app_ui/screens/forget_password.dart';
 import 'package:flight_app_ui/screens/home_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -6,24 +5,22 @@ import 'package:flutter/material.dart';
 // import '../widgets/feild.dart';
 // import '../widgets/text.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   /// TEXTEDITING CONTROLLERS FOR TEXTFIELDS
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   /// DISPOSE
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
-    _passwordController.dispose();
   }
 
   @override
@@ -58,27 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     icon: Icons.alternate_email,
                   ),
                   const SizedBox(height: 20),
-                  Field(
-                    controller: _passwordController,
-                    hinttext: "PASSWORD",
-                    icon: Icons.lock,
-                  ),
-                  const SizedBox(height: 25),
-                  Center(
-                    child: TextUtil(
-                      text: "Forgot Password?",
-                      weight: true,
-                      size: 14,
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const ForgetPasswordScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 25),
                   GestureDetector(
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
@@ -97,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       alignment: Alignment.center,
                       child: TextUtil(
-                        text: "Log in",
+                        text: "Reset Password",
                         weight: true,
                         color: Theme.of(context).primaryColor,
                         size: 16,
@@ -148,47 +124,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class LoginScreen1 extends StatelessWidget {
-  const LoginScreen1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forgot Password'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Forgot Password Screen',
-              // style: Theme.of(context).textTheme.headline6,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Go Back'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class Field extends StatelessWidget {
   final TextEditingController controller;
   final String hinttext;
   final IconData icon;
 
   const Field({
-    super.key,
+    Key? key,
     required this.controller,
     required this.hinttext,
     required this.icon,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -220,13 +166,13 @@ class TextUtil extends StatelessWidget {
   final VoidCallback? onTap;
 
   const TextUtil({
-    super.key,
+    Key? key,
     required this.text,
     this.weight = false,
     this.size = 14,
     this.color,
     this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
