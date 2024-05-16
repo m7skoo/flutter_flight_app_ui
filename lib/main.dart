@@ -1,7 +1,10 @@
-import 'package:flight_app_ui/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flight_app_ui/screens/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -18,10 +21,7 @@ class MyApp extends StatelessWidget {
           indicatorColor: const Color(0xffffcfa1),
           canvasColor: const Color(0xff9dafb1)
           //canvasColor: const Color(0xff597672),
-
           ),
-
-      /// SPLASH SCREEN
       home: const SplashScreen(),
     );
   }

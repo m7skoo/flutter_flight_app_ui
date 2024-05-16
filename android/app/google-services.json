@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836986963698",
+    "project_id": "login-flight-airplane",
+    "storage_bucket": "login-flight-airplane.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836986963698:android:e3bcd650716b8e1206726b",
+        "android_client_info": {
+          "package_name": "com.example.flight_app_ui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGGvITsbLOv_WiKUxb156MDhf1DaoDej0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

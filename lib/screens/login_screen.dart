@@ -1,10 +1,11 @@
-import 'package:flight_app_ui/screens/forget_password.dart';
-import 'package:flight_app_ui/screens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flight_app_ui/screens/forget_password.dart';
+import 'package:flight_app_ui/screens/home_screen.dart';
+import 'package:flight_app_ui/screens/register.dart';
 
-// import '../widgets/feild.dart';
-// import '../widgets/text.dart';
+import '../auth/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,16 +15,47 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  /// TEXTEDITING CONTROLLERS FOR TEXTFIELDS
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isPasswordVisible = false;
 
-  /// DISPOSE
   @override
   void dispose() {
-    super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loginUser() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isNotEmpty && password.isNotEmpty) {
+      try {
+        final user =
+            await _authService.loginUserWithEmailAndPassword(email, password);
+        if (user != null) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        }
+      } catch (e) {
+        String message = 'Login failed. Please check your credentials.';
+        if (e is FirebaseAuthException && e.code == 'email-not-verified') {
+          message = 'Email is not verified. Please verify your email.';
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter email and password.')),
+      );
+    }
   }
 
   @override
@@ -62,6 +94,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     hinttext: "PASSWORD",
                     icon: Icons.lock,
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                   const SizedBox(height: 25),
                   Center(
@@ -80,14 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 25),
                   GestureDetector(
-                    onTap: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
-                    },
+                    onTap: _loginUser,
                     child: Container(
                       height: 50,
                       width: double.infinity,
@@ -107,21 +146,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 25),
                   RichText(
                     text: TextSpan(
-                      text: 'Not a member? ',
+                      text: 'You don\'t have an account?',
                       style: TextStyle(
                         color: Theme.of(context).canvasColor,
                         fontSize: 14,
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Join now',
+                          text: ' Register now',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).indicatorColor,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // Handle join now tap
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen(),
+                                ),
+                              );
                             },
                         ),
                       ],
@@ -148,46 +191,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class LoginScreen1 extends StatelessWidget {
-  const LoginScreen1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forgot Password'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Forgot Password Screen',
-              // style: Theme.of(context).textTheme.headline6,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Go Back'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class Field extends StatelessWidget {
   final TextEditingController controller;
   final String hinttext;
   final IconData icon;
+  final bool obscureText;
+  final Widget? suffixIcon;
 
   const Field({
-    super.key,
+    Key? key,
     required this.controller,
     required this.hinttext,
     required this.icon,
+    this.obscureText = false,
+    this.suffixIcon,
   });
 
   @override
@@ -195,10 +212,12 @@ class Field extends StatelessWidget {
     return TextFormField(
       controller: controller,
       style: TextStyle(color: Theme.of(context).indicatorColor),
+      obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hinttext,
         hintStyle: TextStyle(color: Theme.of(context).indicatorColor),
         prefixIcon: Icon(icon, color: Theme.of(context).indicatorColor),
+        suffixIcon: suffixIcon,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).indicatorColor),
           borderRadius: BorderRadius.circular(15),
@@ -220,7 +239,7 @@ class TextUtil extends StatelessWidget {
   final VoidCallback? onTap;
 
   const TextUtil({
-    super.key,
+    Key? key,
     required this.text,
     this.weight = false,
     this.size = 14,
