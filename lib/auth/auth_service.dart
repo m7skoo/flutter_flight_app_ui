@@ -9,21 +9,27 @@ class AuthService {
     try {
       final cred = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (cred.user != null && cred.user!.emailVerified) {
-        return cred.user;
-      } else {
-        await _auth.signOut();
-        throw FirebaseAuthException(
-          code: 'email-not-verified',
-          message: 'Email is not verified',
-        );
+      if (cred.user != null) {
+        if (cred.user!.emailVerified) {
+          return cred.user;
+        } else {
+          await _auth.signOut();
+          throw FirebaseAuthException(
+              code: 'email-not-verified', message: 'Email is not verified');
+        }
       }
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print("FirebaseAuthException: ${e.message}");
+      }
+      rethrow; // Rethrow the error to handle it in the UI
     } catch (e) {
       if (kDebugMode) {
-        print("Error logging in: $e");
+        print("General error: $e");
       }
       rethrow; // Rethrow the error to handle it in the UI
     }
+    return null;
   }
 
   Future<void> registerUserWithEmailAndPassword(
@@ -41,7 +47,7 @@ class AuthService {
       throw Exception("Registration failed: ${e.message}");
     } catch (e) {
       if (kDebugMode) {
-        print("Error registering user: $e");
+        print("General error: $e");
       }
       rethrow; // Rethrow the error to handle it in the UI
     }

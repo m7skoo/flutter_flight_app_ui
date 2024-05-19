@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flight_app_ui/screens/forget_password.dart';
 import 'package:flight_app_ui/screens/home_screen.dart';
 import 'package:flight_app_ui/screens/register.dart';
-
 import '../auth/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,29 +30,46 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
-    if (email.isNotEmpty && password.isNotEmpty) {
-      try {
-        final user =
-            await _authService.loginUserWithEmailAndPassword(email, password);
-        if (user != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-          );
-        }
-      } catch (e) {
-        String message = 'Login failed. Please check your credentials.';
-        if (e is FirebaseAuthException && e.code == 'email-not-verified') {
-          message = 'Email is not verified. Please verify your email.';
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
-      }
-    } else {
+    if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter email and password.')),
+      );
+      return;
+    }
+
+    try {
+      final user =
+          await _authService.loginUserWithEmailAndPassword(email, password);
+      if (user != null && user.emailVerified) {
+        _emailController.clear();
+        _passwordController.clear();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+                  'Email not verified. Please check your inbox to verify.')),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      String message = 'Login failed. Please check your credentials.';
+      if (e.code == 'email-not-verified') {
+        message = 'Email is not verified. Please verify your email.';
+      } else if (e.code == 'user-not-found') {
+        message = 'No user found with this email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Incorrect password.';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred.')),
       );
     }
   }
