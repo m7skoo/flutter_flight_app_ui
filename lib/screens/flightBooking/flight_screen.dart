@@ -38,11 +38,12 @@ class _FlightScreenState extends State<FlightScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextUtil(
+                    const TextUtil(
                       text: "5 Emirates flight available",
                       color: Colors.white,
                       weight: true,
                       size: 14,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(
                       height: 20,
@@ -99,6 +100,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                               .indicatorColor
                                                           : Colors.white,
                                                       size: 28,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                     const SizedBox(
                                                       height: 5,
@@ -109,6 +112,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                       color: Colors.white,
                                                       size: 12,
                                                       weight: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     )
                                                   ],
                                                 ),
@@ -125,6 +130,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                               .indicatorColor
                                                           : Colors.white,
                                                       size: 28,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                     const SizedBox(
                                                       height: 5,
@@ -135,6 +142,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                       color: Colors.white,
                                                       size: 12,
                                                       weight: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     )
                                                   ],
                                                 )
@@ -156,6 +165,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                           .canvasColor,
                                                       size: 12,
                                                       weight: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                     const SizedBox(
                                                       height: 5,
@@ -166,6 +177,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                       color: Colors.white,
                                                       size: 13,
                                                       weight: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     )
                                                   ],
                                                 ),
@@ -179,6 +192,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                           .canvasColor,
                                                       size: 12,
                                                       weight: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                     const SizedBox(
                                                       height: 5,
@@ -189,6 +204,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                       color: Colors.white,
                                                       size: 13,
                                                       weight: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     )
                                                   ],
                                                 )
@@ -295,6 +312,8 @@ class _FlightScreenState extends State<FlightScreen> {
                                                   color: Colors.white,
                                                   size: 11,
                                                   weight: true,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 )
                                               ],
                                             ),

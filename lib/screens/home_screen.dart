@@ -23,10 +23,12 @@ class HomeScreen extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               size: 12,
               weight: true,
+              overflow: TextOverflow.ellipsis,
             ),
             TextUtil(
               text: "Dev_73arner",
               color: Theme.of(context).primaryColor,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -62,6 +64,7 @@ class HomeScreen extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               weight: true,
               size: 28,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Expanded(

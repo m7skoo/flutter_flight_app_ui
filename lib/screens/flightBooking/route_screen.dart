@@ -68,6 +68,7 @@ class _RouteScreenState extends State<RouteScreen> {
                             color: selectTrip == i
                                 ? Theme.of(context).indicatorColor
                                 : Theme.of(context).canvasColor,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
