@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Import cached network image package
 import 'package:flight_app_ui/screens/detail_screen.dart';
 import 'package:flight_app_ui/widgets/animated_route.dart';
 import 'package:flight_app_ui/widgets/show_up_animation.dart';
@@ -9,14 +8,28 @@ import '../data/flight_data.dart';
 import '../widgets/flight_card.dart';
 import 'flightBooking/add_flight.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  User? _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      setState(() {
+        _currentUser = user;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? currentUser = auth.currentUser;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -31,10 +44,10 @@ class HomeScreen extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             TextUtil(
-              text: currentUser?.displayName ?? "Guest",
+              text: _currentUser?.displayName ?? "Guest",
               color: Theme.of(context).primaryColor,
               overflow: TextOverflow.ellipsis,
-            ),
+            )
           ],
         ),
         elevation: 0,
@@ -55,6 +68,7 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
+            // In the DrawerHeader section of the drawer
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -65,35 +79,25 @@ class HomeScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Display user profile image
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: currentUser?.photoURL != null
-                            ? CachedNetworkImage(
-                                imageUrl: currentUser!.photoURL!,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                                fit: BoxFit.cover,
-                              )
-                            : const Placeholder(), // Placeholder if user doesn't have a profile picture
-                      ),
+                      // Uncomment the CircleAvatar widget and replace the placeholder
+                      // const CircleAvatar(
+                      //   radius: 50,
+                      //   // Use AssetImage to load a local image asset from the assets/images directory
+                      //   // backgroundImage: AssetImage('assets/12.jpg'),
+                      // ),
                       const SizedBox(height: 10),
                       Text(
-                        currentUser?.displayName ??
-                            '', // Display user's display name
+                        _currentUser?.displayName ?? '',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 65),
                       Text(
-                        currentUser?.email ?? '', // Display user's email
+                        _currentUser?.email ?? '',
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 14,
                         ),
                       ),
@@ -102,6 +106,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+
             ListTile(
               leading: const Icon(Icons.account_circle),
               title: const Text('Profile'),
@@ -152,8 +157,9 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(30)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
               ),
               alignment: Alignment.topCenter,
               child: Padding(
@@ -166,12 +172,14 @@ class HomeScreen extends StatelessWidget {
                       delay: 150 * index,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                              data: flightList[index],
-                              index: index,
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                data: flightList[index],
+                                index: index,
+                              ),
                             ),
-                          ));
+                          );
                         },
                         child: FlightCard(
                           data: flightList[index],
@@ -189,9 +197,11 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).indicatorColor,
         onPressed: () {
-          Navigator.of(context).push(MyCustomAnimatedRoute(
-            enterWidget: const AddFlightScreen(),
-          ));
+          Navigator.of(context).push(
+            MyCustomAnimatedRoute(
+              enterWidget: const AddFlightScreen(),
+            ),
+          );
         },
         child: Icon(
           Icons.add,

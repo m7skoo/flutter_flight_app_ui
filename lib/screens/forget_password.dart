@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
-import 'package:flight_app_ui/screens/home_screen.dart';
 import 'package:flight_app_ui/screens/login_screen.dart'; // Import the LoginScreen
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -30,12 +29,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error sending reset email')),
+          const SnackBar(content: Text('Error sending reset email')),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter your email')),
+        const SnackBar(content: Text('Please enter your email')),
       );
     }
   }
