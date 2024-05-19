@@ -68,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // In the DrawerHeader section of the drawer
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -79,12 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Uncomment the CircleAvatar widget and replace the placeholder
-                      // const CircleAvatar(
-                      //   radius: 50,
-                      //   // Use AssetImage to load a local image asset from the assets/images directory
-                      //   // backgroundImage: AssetImage('assets/12.jpg'),
-                      // ),
                       const SizedBox(height: 10),
                       Text(
                         _currentUser?.displayName ?? '',
@@ -133,6 +126,17 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Rate the App'),
               onTap: () {
                 // Handle app rating navigation
+              },
+            ),
+
+            // Logout button
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacementNamed(
+                    '/login'); // Navigate to login screen after logout
               },
             ),
           ],
