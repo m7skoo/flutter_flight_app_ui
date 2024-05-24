@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flight_app_ui/screens/number.dart';
+import 'package:flight_app_ui/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flight_app_ui/screens/forget_password.dart';
-import 'package:flight_app_ui/screens/home_screen.dart';
-import 'package:flight_app_ui/screens/register.dart';
 import '../auth/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -45,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.clear();
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) =>
+                const NumberScreen(), // Navigate to NumberScreen
           ),
         );
       } else {

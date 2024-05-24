@@ -1,3 +1,4 @@
+import 'package:flight_app_ui/widgets/navigate.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flight_app_ui/screens/detail_screen.dart';
@@ -63,84 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         backgroundColor: Colors.white,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        _currentUser?.displayName ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                        ),
-                      ),
-                      const SizedBox(height: 65),
-                      Text(
-                        _currentUser?.email ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
-              onTap: () {
-                // Handle profile navigation
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                // Handle settings navigation
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.airplanemode_inactive_sharp),
-              title: const Text('Airline'),
-              onTap: () {
-                // Handle airline navigation
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.star),
-              title: const Text('Rate the App'),
-              onTap: () {
-                // Handle app rating navigation
-              },
-            ),
-
-            // Logout button
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacementNamed(
-                    '/login'); // Navigate to login screen after logout
-              },
-            ),
-          ],
-        ),
       ),
       body: Column(
         children: [
@@ -213,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Theme.of(context).primaryColor,
         ),
       ),
+      bottomNavigationBar: Navigate(currentUser: _currentUser),
     );
   }
 }
