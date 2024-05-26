@@ -1,10 +1,11 @@
-import 'package:flight_app_ui/widgets/navigate.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flight_app_ui/screens/detail_screen.dart';
 import 'package:flight_app_ui/widgets/animated_route.dart';
 import 'package:flight_app_ui/widgets/show_up_animation.dart';
 import 'package:flight_app_ui/widgets/text.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
 import '../data/flight_data.dart';
 import '../widgets/flight_card.dart';
 import 'flightBooking/add_flight.dart';
@@ -18,6 +19,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? _currentUser;
+  int _selectedIndex = 0;
+
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+  static final List<Widget> _widgetOptions = <Widget>[
+    // Replace these with the actual screens or widgets you want to display for each tab
+    const Text('Home', style: optionStyle),
+    const Text('Likes', style: optionStyle),
+    const Text('Search', style: optionStyle),
+    const Text('Profile', style: optionStyle),
+  ];
 
   @override
   void initState() {
@@ -32,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +148,47 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Theme.of(context).primaryColor,
         ),
       ),
-      bottomNavigationBar: Navigate(currentUser: _currentUser),
+      bottomNavigationBar: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+          child: GNav(
+            rippleColor: Colors.grey[300]!,
+            hoverColor: Colors.grey[100]!,
+            gap: 8,
+            activeColor: Colors.black,
+            iconSize: 24,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            duration: const Duration(milliseconds: 400),
+            tabBackgroundColor: Colors.grey[100]!,
+            color: Colors.black,
+            tabs: const [
+              GButton(
+                icon: LineIcons.home,
+                text: 'Home',
+              ),
+              GButton(
+                icon: Icons.airplanemode_active_outlined, // Airplane icon
+                text: 'Flights',
+              ),
+              GButton(
+                icon: LineIcons.user,
+                text: 'Profile',
+              ),
+              GButton(
+                icon: LineIcons.cog,
+                text: 'settings',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
+        ),
+      ),
     );
   }
 }

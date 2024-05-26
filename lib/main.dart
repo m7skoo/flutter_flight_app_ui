@@ -31,8 +31,6 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xff415a5c),
         indicatorColor: const Color(0xffffcfa1),
         canvasColor: const Color(0xff9dafb1),
-        // Removed Provider.of<OtpProvider>(context).isDarkMode
-        // Set brightness directly to Brightness.light
         brightness: Brightness.light,
       ),
       home: const SplashScreen(),

@@ -21,7 +21,7 @@ class OtpScreenState extends State<OtpScreen> {
   final TextEditingController _otpController4 = TextEditingController();
 
   String _combinedOtp = '';
-  int _timerCount = 60;
+  int _timerCount = 5;
   late Timer _timer;
 
   void _startTimer() {
@@ -188,10 +188,17 @@ class OtpScreenState extends State<OtpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildOTPTextField(_otpController1, isFirst: true),
-                          _buildOTPTextField(_otpController2),
-                          _buildOTPTextField(_otpController3),
-                          _buildOTPTextField(_otpController4, isLast: true),
+                          Expanded(
+                              child: _buildOTPTextField(_otpController1,
+                                  isFirst: true)),
+                          const SizedBox(width: 8),
+                          Expanded(child: _buildOTPTextField(_otpController2)),
+                          const SizedBox(width: 8),
+                          Expanded(child: _buildOTPTextField(_otpController3)),
+                          const SizedBox(width: 8),
+                          Expanded(
+                              child: _buildOTPTextField(_otpController4,
+                                  isLast: true)),
                         ],
                       ),
                       const SizedBox(height: 22),
@@ -242,39 +249,35 @@ class OtpScreenState extends State<OtpScreen> {
 
   Widget _buildOTPTextField(TextEditingController controller,
       {bool isFirst = false, bool isLast = false}) {
-    return SizedBox(
-      height: 85,
-      width: 64,
-      child: TextField(
-        controller: controller,
-        autofocus: isFirst,
-        onChanged: (value) {
-          if (value.length == 1 && !isLast) {
-            FocusScope.of(context).nextFocus();
-          } else if (value.isEmpty && !isFirst) {
-            FocusScope.of(context).previousFocus();
-          }
-          _updateCombinedOtp();
-        },
-        showCursor: false,
-        readOnly: false,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        keyboardType: TextInputType.number,
-        maxLength: 1,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-        decoration: InputDecoration(
-          counter: const Offstage(),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 2, color: Colors.black12),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 2, color: Color(0xffffcfa1)),
-            borderRadius: BorderRadius.circular(12),
-          ),
+    return TextField(
+      controller: controller,
+      autofocus: isFirst,
+      onChanged: (value) {
+        if (value.length == 1 && !isLast) {
+          FocusScope.of(context).nextFocus();
+        } else if (value.isEmpty && !isFirst) {
+          FocusScope.of(context).previousFocus();
+        }
+        _updateCombinedOtp();
+      },
+      showCursor: false,
+      readOnly: false,
+      textAlign: TextAlign.center,
+      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      keyboardType: TextInputType.number,
+      maxLength: 1,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+      ],
+      decoration: InputDecoration(
+        counter: const Offstage(),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 2, color: Colors.black12),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 2, color: Color(0xffffcfa1)),
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
     );
