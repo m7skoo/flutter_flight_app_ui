@@ -1,3 +1,4 @@
+import 'package:flight_app_ui/screens/destinationscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flight_app_ui/screens/detail_screen.dart';
@@ -24,21 +25,45 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static final List<Widget> _widgetOptions = <Widget>[
-    // Replace these with the actual screens or widgets you want to display for each tab
-    const Text('Home', style: optionStyle),
-    const Text('Likes', style: optionStyle),
-    const Text('Search', style: optionStyle),
-    const Text('Profile', style: optionStyle),
+    const Text(
+      'Home',
+      style: optionStyle,
+    ),
+    const Text(
+      'Flights',
+      style: optionStyle,
+    ),
+    const Text(
+      'Profile',
+      style: optionStyle,
+    ),
+    const Text(
+      'Settings',
+      style: optionStyle,
+    ),
+    const Text(
+      'Rate',
+      style: optionStyle,
+    ),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      setState(() {
-        _currentUser = user;
-      });
+  get destination => null;
+
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
+
+    if (index == 3) {
+      // Assuming the settings tab is at index 3
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              DestinationScreen(), // Pass null for destination
+        ),
+      );
+    }
   }
 
   @override
@@ -179,13 +204,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: LineIcons.cog,
                 text: 'settings',
               ),
+              GButton(
+                icon: Icons.star_rate_rounded,
+                text: 'Rate',
+              ),
             ],
             selectedIndex: _selectedIndex,
-            onTabChange: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
+            onTabChange: _onTabChange, // Use the method for tab change
           ),
         ),
       ),
