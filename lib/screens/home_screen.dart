@@ -1,4 +1,4 @@
-import 'package:flight_app_ui/screens/destinationscreen.dart';
+import 'package:flight_app_ui/screens/explorscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flight_app_ui/screens/detail_screen.dart';
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: optionStyle,
     ),
     const Text(
-      'Settings',
+      'Explore',
       style: optionStyle,
     ),
     const Text(
@@ -46,8 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
       style: optionStyle,
     ),
   ];
-
-  get destination => null;
 
   void _onTabChange(int index) {
     setState(() {
@@ -59,8 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              DestinationScreen(), // Pass null for destination
+          builder: (context) => const ExploreScreen(),
         ),
       );
     }
@@ -201,8 +198,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 text: 'Profile',
               ),
               GButton(
-                icon: LineIcons.cog,
-                text: 'settings',
+                icon: Icons.travel_explore_sharp, // Airplane icon
+                text: 'Expoler',
               ),
               GButton(
                 icon: Icons.star_rate_rounded,

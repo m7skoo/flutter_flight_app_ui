@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flight_app_ui/models/activity_model.dart';
 import 'package:flight_app_ui/models/destination_model.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DestinationScreen extends StatefulWidget {
-  late final Destination destination;
+  final Destination destination;
+
+  const DestinationScreen({Key? key, required this.destination})
+      : super(key: key);
 
   @override
   _DestinationScreenState createState() => _DestinationScreenState();
@@ -68,13 +71,13 @@ class _DestinationScreenState extends State<DestinationScreen> {
                           icon: const Icon(Icons.search),
                           iconSize: 30.0,
                           color: Colors.black,
-                          onPressed: () {},
+                          onPressed: () => Navigator.pop(context),
                         ),
                         IconButton(
                           icon: const Icon(FontAwesomeIcons.sortAmountDown),
                           iconSize: 25.0,
                           color: Colors.black,
-                          onPressed: () {},
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ],
                     ),
@@ -135,94 +138,97 @@ class _DestinationScreenState extends State<DestinationScreen> {
                 Activity activity = widget.destination.activities[index];
                 return Stack(
                   children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
-                      height: 170.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  width: 120.0,
-                                  child: Text(
-                                    activity.name,
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      '\$${activity.price}',
+                    SingleChildScrollView(
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
+                        height: 170.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              100.0, 20.0, 20.0, 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    width: 120.0,
+                                    child: Text(
+                                      activity.name,
                                       style: const TextStyle(
-                                        fontSize: 22.0,
+                                        fontSize: 18.0,
                                         fontWeight: FontWeight.w600,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
                                     ),
-                                    const Text(
-                                      'per pax',
-                                      style: TextStyle(
-                                        color: Colors.grey,
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Text(
+                                        '\$${activity.price}',
+                                        style: const TextStyle(
+                                          fontSize: 22.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Text(
-                              activity.type,
-                              style: const TextStyle(
-                                color: Colors.grey,
+                                      const Text(
+                                        'per pax',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-                            _buildRatingStars(activity.rating),
-                            const SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  width: 70.0,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).indicatorColor,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    activity.startTimes[0],
-                                  ),
+                              Text(
+                                activity.type,
+                                style: const TextStyle(
+                                  color: Colors.grey,
                                 ),
-                                const SizedBox(width: 10.0),
-                                Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  width: 70.0,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).indicatorColor,
-                                    borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              _buildRatingStars(activity.rating),
+                              const SizedBox(height: 10.0),
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding: const EdgeInsets.all(5.0),
+                                    width: 70.0,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      activity.startTimes[0],
+                                    ),
                                   ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    activity.startTimes[1],
+                                  const SizedBox(width: 10.0),
+                                  Container(
+                                    padding: const EdgeInsets.all(5.0),
+                                    width: 70.0,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      activity.startTimes[1],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -234,7 +240,9 @@ class _DestinationScreenState extends State<DestinationScreen> {
                         borderRadius: BorderRadius.circular(20.0),
                         child: Image(
                           width: 110.0,
-                          image: AssetImage(activity.imageUrl),
+                          image: AssetImage(
+                            activity.imageUrl,
+                          ),
                           fit: BoxFit.cover,
                         ),
                       ),

@@ -14,6 +14,8 @@ class Destination {
     required this.description,
     required this.activities,
   });
+
+  toFlightItem() {}
 }
 
 List<Activity> activities = [
